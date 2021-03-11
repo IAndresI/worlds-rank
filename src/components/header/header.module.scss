@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  &__green {
+    color: var(--primary-color);
+  }
+
+  &__logo {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 35px;
+    position: relative;
+    width: fit-content;
+  }
+
+  &__image {
+    position: absolute;
+    width: 22px;
+    height: 4.4px;
+    left: -28px;
+    bottom: 8px;
+    background: #21B6B7;
+    border-radius: 2px;
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+
+      width: 15px;
+      height: 4.4px;
+      left: 0;
+      bottom: 6px;
+      background: #21B6B7;
+      border-radius: 2px;
+    }
+
+    &::before {
+      width: 8px;
+      bottom: 12px;
+    }
+  }
+}

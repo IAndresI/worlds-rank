@@ -1,0 +1,52 @@
+.search {
+  color: var(--text-color-secondary);
+  margin-bottom: 30px;
+
+  &__counter {
+    font-weight: 500;
+    font-size: 16px;
+    flex: 1;
+    margin: 0;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+  }
+
+  &__form {
+    display: flex;
+    flex: 1;
+    position: relative;
+  }
+
+  &__input {
+    width: 100%;
+    background: var(--background-color-dark);
+    border-radius: 12px;
+    border: none;
+    padding-left: 50px;
+    height: 50px;
+
+    &::placeholder {
+      color: inherit;
+
+    }
+  }
+
+  &__submit {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 50px;
+    border: none;
+    background-color: transparent;
+    background-size: 50%;
+    color: inherit;
+    background-image: url(../../assets/images/magnifier.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+}
