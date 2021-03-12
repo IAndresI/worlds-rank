@@ -1,12 +1,14 @@
 import Layout from '../components/layout';
 import Search from '../components/search';
 import wolrdsRankService from '../api/index';
+import CountryList from '../components/countryList';
 
 export default function Home({countries}) {
   return (
-    <Layout countries={countries}>
+    <Layout>
       <Search countriesCount={countries.length}/>
-    </Layout>
+      <CountryList countries={countries}/>
+    </Layout >
   )
 }
 

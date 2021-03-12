@@ -50,3 +50,24 @@
     cursor: pointer;
   }
 }
+
+@media screen and(max-width: 800px) {
+  .search {
+    &__inner {
+      flex-direction: column;
+    }
+
+    &__counter {
+      order: 1;
+      margin-top: 30px;
+    }
+
+    &__input {
+      height: 80px;
+    }
+
+    &__form {
+      width: 100%;
+    }
+  }
+}

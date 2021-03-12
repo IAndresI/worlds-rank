@@ -2,7 +2,7 @@ import styles from './layout.module.scss';
 import Head from 'next/head';
 import Header from '../header';
 
-const Layout = ({countries, children, title="World Rank"}) => {
+const Layout = ({children, title="World Rank"}) => {
   return (
     <>
       <Head>

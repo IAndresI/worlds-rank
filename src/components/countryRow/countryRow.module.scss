@@ -1,0 +1,79 @@
+.row {
+  width: 100%;
+  display: flex;
+  padding: 20px;
+  background-color: var(--background-color-light);
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.column {
+  flex: 1;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.flag {
+  width: 50px;
+  height: 37.7px;
+  object-fit: cover;
+  margin-right: 25px;
+}
+
+.column__left {
+  flex: 1;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+}
+
+.counter {
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.progress[value] {
+  appearance: none;
+  width: 130px;
+  height: 6px;
+  border-radius: 12px;
+}
+
+.progress[value]::-webkit-progress-bar {
+  background-color: var(--text-color-secondary);
+  border-radius: 12px;
+}
+
+.progress[value]::-webkit-progress-value {
+  background-color: var(--primary-color);
+  border-radius: 12px;
+}
+
+@media screen and (max-width:992px) {
+  .column {
+
+    &:nth-child(4),
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width:420px) {
+  .column__left {
+
+    span {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .column {
+
+    &:nth-child(2) {
+      display: none;
+    }
+  }
+}
