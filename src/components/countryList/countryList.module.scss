@@ -50,7 +50,7 @@
   }
 }
 
-.arrowTop {
+.arrow {
   position: absolute;
   width: 15px;
   right: 0;
@@ -59,17 +59,17 @@
   background-size: contain;
   background-image: url(../../assets//images/arrow-top.svg);
   margin-left: 10px;
+  opacity: 0;
+  transition: all 0.5s;
 }
 
-.arrowDown {
-  position: absolute;
-  right: 0;
-  width: 15px;
-  height: 15px;
-  object-fit: cover;
-  background-size: contain;
-  background-image: url(../../assets//images/arrow-down.svg);
-  margin-left: 10px;
+.arrow.arrowTop {
+  opacity: 1;
+}
+
+.arrow.arrowDown {
+  opacity: 1;
+  transform: rotate(180deg);
 }
 
 @media screen and (max-width:992px) {

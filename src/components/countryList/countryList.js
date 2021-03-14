@@ -57,11 +57,11 @@ const CountryList = ({countries}) => {
   }
 
   function setArrow(orderName) {
-    if(orderName === orderBy) {
-      if(ordred === "asc") return <div className={styles.arrowDown}></div>
-      else if (ordred === "desc") return <div className={styles.arrowTop}></div>
-      else return null;
-    }
+    return `
+      ${styles.arrow}
+      ${(orderBy === orderName && ordred==="asc") ? styles.arrowTop : 
+      (orderBy === orderName && ordred==="desc") ? styles.arrowDown : null}
+    `
   }
 
   return (
@@ -72,25 +72,25 @@ const CountryList = ({countries}) => {
             onClick={() => setFilter("name")}
             className={styles.header__item}>
               Name
-              {setArrow("name")}
+              <i className={setArrow("name")} />
           </button>
           <button 
             onClick={() => setFilter("population")}
             className={styles.header__item}>
               Population
-              {setArrow("population")}
+              <i className={setArrow("population")} />
             </button>
           <button 
             onClick={() => setFilter("area")}
             className={styles.header__item}>
               Area
-              {setArrow("area")}
+              <i className={setArrow("area")} />
             </button>
           <button 
             onClick={() => setFilter("gini")}
             className={styles.header__item}>
               Gini
-              {setArrow("gini")}  
+              <i className={setArrow("gini")} />
             </button>
         </div>
         {

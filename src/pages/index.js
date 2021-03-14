@@ -15,7 +15,7 @@ export default function Home({countries}) {
 
   return (
     <Layout>
-      <Search countriesCount={countries.length} setSearch={setSearch}/>
+      <Search countriesCount={searched.length} setSearch={setSearch}/>
       <CountryList countries={searched}/>
     </Layout >
   )
@@ -29,3 +29,4 @@ export const getStaticProps = async() => {
     }
   }
 } 
+
