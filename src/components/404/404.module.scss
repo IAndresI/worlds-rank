@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 58px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+
+.link {
+  padding: 10px 60px;
+  background-color: var(--primary-color);
+  border-radius: 12px;
+  color: #ffffff;
+  transition: all 0.5s;
+
+  &:hover,
+  &:focus {
+    outline: transparent;
+    color: var(--primary-color);
+    background-color: var(--background-color-light);
+  }
+}

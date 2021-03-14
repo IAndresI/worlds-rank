@@ -9,6 +9,10 @@ class WolrdsRankService {
   async getAllCountries() {
     return await this.getData("all");
   }
+
+  async getCountry(id) {
+    return await this.getData(`alpha/${id}`);
+  }
 }
 
 export default new WolrdsRankService();

@@ -27,10 +27,10 @@
     border: none;
     padding-left: 50px;
     height: 50px;
+    color: var(--text-color);
 
     &::placeholder {
-      color: inherit;
-
+      color: var(--text-color-secondary);
     }
   }
 

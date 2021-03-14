@@ -17,8 +17,8 @@
 .flag {
   width: 50px;
   height: 37.7px;
-  object-fit: cover;
   margin-right: 25px;
+  border-radius: 4px;
 }
 
 .column__left {
@@ -58,6 +58,24 @@
     &:nth-child(3) {
       display: none;
     }
+  }
+}
+
+.link {
+  transition: all 0.5s;
+  display: block;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    transform: translateY(-7px);
+    box-shadow: var(--box-shadow);
+    outline: transparent;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
   }
 }
 

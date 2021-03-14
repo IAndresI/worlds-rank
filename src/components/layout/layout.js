@@ -10,7 +10,7 @@ const Layout = ({children, title="World Rank"}) => {
         <link rel="icon" href="./favicon.ico"/>
       </Head>
       <Header/>
-      <main>
+      <main className={styles.main}>
         {children}
       </main>
       <footer className={styles.footer}>

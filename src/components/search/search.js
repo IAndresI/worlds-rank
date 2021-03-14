@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './search.module.scss';
 
-const Saerch = ({countriesCount}) => {
+const Saerch = ({countriesCount, setSearch}) => {
   return (
     <section className={styles.search}>
       <div className="container">
@@ -10,7 +10,7 @@ const Saerch = ({countriesCount}) => {
             Found <span>{countriesCount}</span> countries
           </h2>
           <form className={styles.search__form}>
-            <input placeholder="Filter by Name, Region, Subregion" type="search" className={styles.search__input}/>
+            <input placeholder="Filter by Name, Region, Subregion" type="search" onChange={(e) => {setSearch(e.target.value)}} className={styles.search__input}/>
             <button type="submit" className={styles.search__submit}></button>
           </form>
         </div>

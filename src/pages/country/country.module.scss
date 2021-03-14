@@ -1,0 +1,97 @@
+.inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.smallContainer {
+  max-width: 350px;
+  width: 100%;
+  padding: 35px 30px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  background-color: var(--background-color-light);
+  border-radius: 12px;
+  margin-right: 51px;
+  height: 100%;
+}
+
+.bigContainer {
+  width: 100%;
+  padding: 35px 0;
+  box-shadow: var(--box-shadow);
+  background-color: var(--background-color-light);
+  border-radius: 12px;
+}
+
+.imageContainer {
+  max-width: 283px;
+  height: 215px;
+  margin-bottom: 25px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.region {
+  margin-bottom: 40px;
+}
+
+.miniInfoContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.descriptionName {
+  color: var(--text-color-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.row {
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--background-color-dark);
+  display: flex;
+  justify-content: space-between;
+}
+
+.details {
+  padding: 0 35px;
+  margin-bottom: 20px;
+}
+
+.counter {
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.progress[value] {
+  appearance: none;
+  width: 130px;
+  height: 6px;
+  border-radius: 12px;
+}
+
+.progress[value]::-webkit-progress-bar {
+  background-color: var(--text-color-secondary);
+  border-radius: 12px;
+}
+
+.progress[value]::-webkit-progress-value {
+  background-color: var(--primary-color);
+  border-radius: 12px;
+}
+
+.gini {
+  display: flex;
+  align-items: center;
+}
