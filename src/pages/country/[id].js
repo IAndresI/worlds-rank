@@ -21,10 +21,11 @@ const Row = ({name, description}) => (
 )
 
 function setNeighbourCountries(data) {
-  console.log(data);
-  return data.map(e => (
-    <Link href={`/country/${e.alpha3Code}`}>
-      <a>
+  return Array.isArray(data) ? 
+  (
+    data.map(e => (
+    <Link key={e.alpha3Code} href={`/country/${e.alpha3Code}`}>
+      <a className={styles.neighbourLink}>
         <li key={e.alpha3Code} className={styles.item}>
           <div className={styles.neighbourFlagContainer}>
             <img src={e.flag} className={styles.neighbourFlag} alt="flag" />
@@ -34,6 +35,9 @@ function setNeighbourCountries(data) {
       </a>
     </Link>
   ))
+  )
+  :
+  "This country has no neighbouring countries"
 }
 
 const Country = ({country, neighbourCountries}) => {
@@ -87,7 +91,7 @@ const Country = ({country, neighbourCountries}) => {
 
 export const getServerSideProps = async ({params}) => {
   const country = await WolrdsRankService.getCountry(params.id);
-  console.log(country.borders);
+  console.log(country.borders.join(";"));
   const neighbourCountries = await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`)
 
   return {
