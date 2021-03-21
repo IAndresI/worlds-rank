@@ -1,6 +1,7 @@
 import styles from './country.module.scss';
 import Layout from '../../components/layout';
 import WolrdsRankService from '../../api';
+import Link from 'next/Link';
 
 const Row = ({name, description}) => (
   <div className={styles.row}>
@@ -19,7 +20,23 @@ const Row = ({name, description}) => (
   </div>
 )
 
-const Country = ({country}) => {
+function setNeighbourCountries(data) {
+  console.log(data);
+  return data.map(e => (
+    <Link href={`/country/${e.alpha3Code}`}>
+      <a>
+        <li key={e.alpha3Code} className={styles.item}>
+          <div className={styles.neighbourFlagContainer}>
+            <img src={e.flag} className={styles.neighbourFlag} alt="flag" />
+          </div>
+          <div className={styles.neighbourName}>{e.name}</div>
+        </li>
+      </a>
+    </Link>
+  ))
+}
+
+const Country = ({country, neighbourCountries}) => {
   return (
     <Layout title={country.name}>
       <section>
@@ -54,6 +71,12 @@ const Country = ({country}) => {
                 <Row name="Native name" description={country.nativeName}/>
                 <Row name="Gini" description={country.gini}/>
               </div>
+              <div className={styles.neighbourContainer}>
+                <h2 className={styles.neighbourTitle}>Neighbouring Countries </h2>
+                <ul className={styles.list}>
+                  {setNeighbourCountries(neighbourCountries)}
+                </ul>
+              </div>
             </div>  
           </div>
         </div>
@@ -64,10 +87,13 @@ const Country = ({country}) => {
 
 export const getServerSideProps = async ({params}) => {
   const country = await WolrdsRankService.getCountry(params.id);
+  console.log(country.borders);
+  const neighbourCountries = await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`)
 
   return {
     props: {
-      country
+      country,
+      neighbourCountries
     }
   }
 }
