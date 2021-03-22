@@ -11,6 +11,15 @@
   --box-shadow: 0 3px 10px rgba(0, 0, 0, .2)
 }
 
+[data-theme="dark"] {
+  --text-color: #f0f0f0;
+  --text-color-secondary: #b3c5cd;
+  --primary-color: #21d6d7;
+  --background-color: #252329;
+  --background-color-light: #3c393f;
+  --background-color-dark: #120f13;
+}
+
 html,
 body {
   padding: 0;
@@ -20,6 +29,7 @@ body {
   color: var(--text-color);
   position: relative;
   min-height: 100vh;
+  transition: all .5s;
 }
 
 a {

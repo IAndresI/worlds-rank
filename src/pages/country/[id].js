@@ -21,7 +21,7 @@ const Row = ({name, description}) => (
 )
 
 function setNeighbourCountries(data) {
-  return Array.isArray(data) ? 
+  return data ? 
   (
     data.map(e => (
     <Link key={e.alpha3Code} href={`/country/${e.alpha3Code}`}>
@@ -91,8 +91,7 @@ const Country = ({country, neighbourCountries}) => {
 
 export const getServerSideProps = async ({params}) => {
   const country = await WolrdsRankService.getCountry(params.id);
-  console.log(country.borders.join(";"));
-  const neighbourCountries = await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`)
+  const neighbourCountries = country.borders.length > 0 ? await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`) : null;
 
   return {
     props: {

@@ -1,7 +1,6 @@
 import styles from './layout.module.scss';
 import Head from 'next/head';
 import Header from '../header';
-import Link from 'next/Link';
 
 const Layout = ({children, title="World Rank"}) => {
   return (
@@ -10,11 +9,7 @@ const Layout = ({children, title="World Rank"}) => {
         <title>{title}</title>
         <link rel="icon" href="./favicon.ico"/>
       </Head>
-      <Link href="/">
-        <a>
-        <Header/>
-        </a>
-      </Link>
+      <Header/>
       <main className={styles.main}>
         {children}
       </main>

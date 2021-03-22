@@ -2,6 +2,8 @@
   display: flex;
   justify-content: center;
   text-align: center;
+  align-items: center;
+  margin-top: 35px;
 
   &__green {
     color: var(--primary-color);
@@ -10,7 +12,6 @@
   &__logo {
     font-size: 24px;
     font-weight: 700;
-    margin-top: 35px;
     position: relative;
     width: fit-content;
   }
@@ -42,4 +43,39 @@
       bottom: 12px;
     }
   }
+}
+
+.theme {
+  margin-left: 20px;
+  border: none;
+  height: 100%;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.5s;
+
+  &:hover,
+  &:focus {
+    outline: transparent;
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.themeDark,
+.themeLight {
+  background-image: url("../../assets/images/moon.svg");
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 70%;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.themeLight {
+  background-image: url("../../assets/images/sun.svg");
 }
