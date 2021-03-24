@@ -1,11 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CountryRow from '../countryRow';
 import styles from './countryList.module.scss';
+import Pagination from '../pagination';
 
 const CountryList = ({countries}) => {
   const [orderBy, setOrderBy] = useState("default");
   const [ordred, setOrdred] = useState("");
+  const [allCountries, setAllCountries] = useState(null)
+  const [countriesCount, setCountriesCount] = useState(0)
+  const [page, setPage] = useState(0)
+  const [countryPerPage] = useState(10)
 
+  useEffect(() => {
+    order();
+  },[orderBy, ordred, page, countries])
 
   function order() {
     let orderedCountries;
@@ -22,18 +30,20 @@ const CountryList = ({countries}) => {
         break;
       default: orderedCountries = countriesList;
     }
-    return orderedCountries.map(e => (
-        <CountryRow
-          key={e.alpha3Code}
-          id={e.alpha3Code}
-          name={e.name} 
-          population={e.population} 
-          gini={e.gini} 
-          area={e.area}
-          flag={e.flag}
-        />
-      )
+    setAllCountries(orderedCountries.map(e => (
+          <CountryRow
+            key={e.alpha3Code}
+            id={e.alpha3Code}
+            name={e.name} 
+            population={e.population} 
+            gini={e.gini} 
+            area={e.area}
+            flag={e.flag}
+          />
+        )
+      ).slice(page*countryPerPage, (page*countryPerPage) + countryPerPage)
     )
+    setCountriesCount(orderedCountries.length);
   }
 
   function setFilter(filterName) {
@@ -94,8 +104,9 @@ const CountryList = ({countries}) => {
             </button>
         </div>
         {
-          order()
+          allCountries
         }
+        <Pagination itemsPerPage={countryPerPage} itemsCount={countriesCount} setPage={setPage} currentPage={page} />
       </div>
     </section>
   );

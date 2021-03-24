@@ -79,3 +79,13 @@
 .themeLight {
   background-image: url("../../assets/images/sun.svg");
 }
+
+@media screen and (max-width: 500px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .theme {
+    margin-left: 0;
+  }
+}
