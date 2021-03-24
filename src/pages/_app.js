@@ -11,7 +11,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
-    if(localStorage.getItem("dark-theme") === "false") document.documentElement.setAttribute("data-theme", "light")
+    if(localStorage.getItem("dark-theme") === "false" ? true : false) document.documentElement.setAttribute("data-theme", "light")
     else document.documentElement.setAttribute("data-theme", "dark")
   }, [])
 

@@ -6,9 +6,7 @@ const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
 
   useEffect(() => {
-    if(localStorage.getItem("dark-theme") === "false" ? true : false) document.documentElement.setAttribute("data-theme", "light")
-    else document.documentElement.setAttribute("data-theme", "dark")
-    setDarkTheme(() => localStorage.getItem("dark-theme") === "false" ? false : true);
+    setDarkTheme(localStorage.getItem("dark-theme") === "false" ? false : true);
   }, [])
 
   return (
@@ -25,7 +23,7 @@ const Header = () => {
         localStorage.setItem("dark-theme", localStorage.getItem("dark-theme") === "false" ? "true" : "false");
         if(localStorage.getItem("dark-theme") === "false" ? true : false) document.documentElement.setAttribute("data-theme", "light")
         else document.documentElement.setAttribute("data-theme", "dark")
-        setDarkTheme(() => localStorage.getItem("dark-theme") === "false" ? false : true);
+        setDarkTheme(localStorage.getItem("dark-theme") === "false" ? false : true);
       }} className={styles.theme}>
         {darkTheme ? <i className={styles.themeLight}/> : <i className={styles.themeDark}/>}
       </button>
