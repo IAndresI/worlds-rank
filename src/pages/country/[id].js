@@ -3,34 +3,55 @@ import Layout from '../../components/layout';
 import WolrdsRankService from '../../api';
 import Link from 'next/Link';
 
-const Row = ({name, description}) => (
-  <div className={styles.row}>
-    <span className={styles.descriptionName}>{name}</span>
-    {
-      name === "Gini" ? 
-        description ? (
-          <div className={styles.gini}>
-            <progress className={styles.progress} max="100" value={description}></progress>
-            <span className={styles.counter}>{Math.round(description)}%</span>
-          </div>
+function getObjectValue(obj) {
+  const objProps = Object.keys(obj);
+  let str = '';
+  if(typeof obj[objProps[0]] === 'object') {
+    objProps.forEach(prop => {
+      if(typeof obj[prop] === 'object') {
+        str += getObjectValue(obj[prop])+"\r\n";
+      }
+      else {
+        str += obj[prop];
+      }
+    });
+  } else {
+    const stringPropsArr = objProps.map(prop => {
+      return obj[prop];
+    })
+    str += stringPropsArr.join(', ')
+  }
+  
+  return str;
+}
+
+const Row = ({name, description, Custom}) => {
+  return (
+    <div className={styles.row}>
+      <span className={styles.descriptionName}>{name}</span>
+      {
+        Custom ? (
+          <Custom {...description} />
+        )
+        : description ? (
+          <p className={styles.descriptionText}>{Array.isArray(description) ? description.join(', ') : typeof description === 'object' ? getObjectValue(description) : (description ? description : "No Data")}</p>
         ) : "No data"
-      :
-        <span>{Array.isArray(description) ? description[0]["name"] : (description ? description : "No Data")}</span>
-    }
-  </div>
-)
+      }
+    </div>
+  )
+}
 
 function setNeighbourCountries(data) {
   return data ? 
   (
     data.map(e => (
-    <Link key={e.alpha3Code} href={`/country/${e.alpha3Code}`}>
+    <Link key={e.cca2} href={`/country/${e.cca2}`}>
       <a className={styles.neighbourLink}>
-        <li key={e.alpha3Code} className={styles.item}>
+        <li key={e.cca2} className={styles.item}>
           <div className={styles.neighbourFlagContainer}>
-            <img src={e.flag} className={styles.neighbourFlag} alt="flag" />
+            <img src={e.flags.png} className={styles.neighbourFlag} alt="flag" />
           </div>
-          <div className={styles.neighbourName}>{e.name}</div>
+          <div className={styles.neighbourName}>{e.name.common}</div>
         </li>
       </a>
     </Link>
@@ -42,16 +63,16 @@ function setNeighbourCountries(data) {
 
 const Country = ({country, neighbourCountries}) => {
   return (
-    <Layout title={country.name}>
+    <Layout title={country.name.official}>
       <section>
         <div className="container">
           <div className={styles.inner}>
             <div className={styles.smallContainer}>
               <div className={styles.imageContainer}>
-                <img className={styles.image} src={country.flag} alt="flag"/>
+                <img className={styles.image} src={country.flags.png} alt="flag"/>
               </div>
               <h2 className={styles.name}>
-                {country.name}
+                {country.name.official}
               </h2>
               <div className={styles.region}>{country.region}</div>
               <div className={styles.miniInfoContainer}>
@@ -72,8 +93,21 @@ const Country = ({country, neighbourCountries}) => {
                 <Row name="Subregion" description={country.subregion}/>
                 <Row name="Languages" description={country.languages}/>
                 <Row name="Currencies" description={country.currencies}/>
-                <Row name="Native name" description={country.nativeName}/>
-                <Row name="Gini" description={country.gini}/>
+                <Row name="Native name" description={country.name.nativeName}/>
+                <Row 
+                  name="Gini" 
+                  description={country.gini}
+                  Custom={(gini) => {
+                    if(Object.keys(gini).length === 0) return 'No Data'
+                    const [giniYear] = Object.keys(gini);
+                    return (
+                      <div className={styles.gini}>
+                        <progress className={styles.progress} max="100" value={gini[giniYear]}></progress>
+                        <span className={styles.counter}>{Math.round(gini[giniYear])}%</span>
+                      </div>
+                    )
+                  }}
+                />
               </div>
               <div className={styles.neighbourContainer}>
                 <h2 className={styles.neighbourTitle}>Neighbouring Countries </h2>
@@ -90,8 +124,8 @@ const Country = ({country, neighbourCountries}) => {
 };
 
 export const getServerSideProps = async ({params}) => {
-  const country = await WolrdsRankService.getCountry(params.id);
-  const neighbourCountries = country.borders.length > 0 ? await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`) : null;
+  const [country] = await WolrdsRankService.getCountry(params.id);
+  const neighbourCountries = country?.borders?.length > 0 ? await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`) : null;
 
   return {
     props: {

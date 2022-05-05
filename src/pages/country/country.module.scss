@@ -54,6 +54,12 @@
   color: var(--text-color-secondary);
   font-size: 14px;
   font-weight: 500;
+  min-width: 20%;
+}
+
+.descriptionText {
+  white-space: break-spaces;
+  margin: 0;
 }
 
 .row {

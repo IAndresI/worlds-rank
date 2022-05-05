@@ -3,6 +3,9 @@ import styles from './countryRow.module.scss';
 import Link from 'next/Link';
 
 const CountryRow = ({name, flag, area, gini, population, id}) => {
+
+  const giniYear = gini ? Object.keys(gini) : 'No data';
+
   return (
     <Link href={`/country/${id}`}>
       <a className={styles.link}>
@@ -21,8 +24,8 @@ const CountryRow = ({name, flag, area, gini, population, id}) => {
             {
               gini ? (
                 <>
-                  <progress className={styles.progress} max="100" value={gini}></progress>
-                  <span className={styles.counter}>{Math.round(gini)}%</span>
+                  <progress className={styles.progress} max="100" value={gini[giniYear[0]]}></progress>
+                  <div className={styles.counter}>{Math.round(gini[giniYear[0]])}%<span>(From {giniYear[0]})</span></div>
                 </>
               ) : "No data"
             }

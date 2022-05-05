@@ -7,10 +7,11 @@ import CountryList from '../components/countryList';
 export default function Home({countries}) {
   const [search, setSearch] = useState("");
 
-  const searched = countries.filter(e => 
-    e.name.toLowerCase().includes(search) || 
+  const searched = countries.filter(e => {
+    return e.name.common.toLowerCase().includes(search) || 
     e.region.toLowerCase().includes(search) || 
-    e.subregion.toLowerCase().includes(search)
+    e?.subregion?.toLowerCase().includes(search)
+    }
   )
 
   return (

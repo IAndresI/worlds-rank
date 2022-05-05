@@ -1,5 +1,5 @@
 class WolrdsRankService {
-  _src = "https://restcountries.eu/rest/v2";
+  _src = "https://restcountries.com/v3.1/";
 
   async getData(path = "") {
     const res = await fetch(`${this._src}/${path}`);

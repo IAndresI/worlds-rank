@@ -32,6 +32,9 @@
   font-weight: 500;
   font-size: 12px;
   margin-left: 10px;
+  span {
+    margin-left: 1rem;
+  }
 }
 
 .progress[value] {

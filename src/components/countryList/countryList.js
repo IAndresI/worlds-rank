@@ -32,13 +32,13 @@ const CountryList = ({countries}) => {
     }
     setAllCountries(orderedCountries.map(e => (
           <CountryRow
-            key={e.alpha3Code}
-            id={e.alpha3Code}
-            name={e.name} 
+            key={e.cca2}
+            id={e.cca2}
+            name={e.name.common} 
             population={e.population} 
             gini={e.gini} 
             area={e.area}
-            flag={e.flag}
+            flag={e.flags.png}
           />
         )
       ).slice(page*countryPerPage, (page*countryPerPage) + countryPerPage)
