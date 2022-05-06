@@ -4,8 +4,8 @@ import styles from './countryList.module.scss';
 import Pagination from '../pagination';
 
 const CountryList = ({countries}) => {
-  const [orderBy, setOrderBy] = useState("default");
-  const [ordred, setOrdred] = useState("");
+  const [filterBy, setFilterBy] = useState("default");
+  const [orderBy, setOrderBy] = useState("");
   const [allCountries, setAllCountries] = useState(null)
   const [countriesCount, setCountriesCount] = useState(0)
   const [page, setPage] = useState(0)
@@ -13,24 +13,41 @@ const CountryList = ({countries}) => {
 
   useEffect(() => {
     order();
-  },[orderBy, ordred, page, countries])
+  },[filterBy, orderBy, page, countries])
+
+  function specialFilter(list, orderNumber) {
+    switch (filterBy) {
+      case 'name':
+        return list.sort((a, b) => b.name.common > a.name.common ? orderNumber : -orderNumber);
+      case 'gini':
+        return list.sort((a, b) => {
+          if (!a.gini) return orderNumber;
+          if (!b.gini) return -orderNumber;
+          const [giniYearA] = Object.keys(a.gini);
+          const [giniYearB] = Object.keys(b.gini);
+          return b.gini[giniYearB] > a.gini[giniYearA] ? orderNumber : -orderNumber;
+        });
+      default:
+        return list.sort((a, b) => b[filterBy] > a[filterBy] ? orderNumber : -orderNumber);;
+    }
+  }
 
   function order() {
-    let orderedCountries;
+    let sortedCountries;
     let countriesList = [...countries];
-    switch(ordred) {
+    switch(orderBy) {
       case "": 
-        orderedCountries = countriesList;
+        sortedCountries = countriesList;
         break;
-      case "asc": 
-        orderedCountries = countriesList.sort((a, b) => b[orderBy] > a[orderBy] ? 1 : -1);
+      case "asc":
+        sortedCountries = specialFilter(countriesList, 1);
         break;
       case "desc": 
-        orderedCountries = countriesList.sort((a, b) => b[orderBy] > a[orderBy] ? -1 : 1);
+        sortedCountries = specialFilter(countriesList, -1);
         break;
-      default: orderedCountries = countriesList;
+      default: sortedCountries = countriesList;
     }
-    setAllCountries(orderedCountries.map(e => (
+    setAllCountries(sortedCountries.map(e => (
           <CountryRow
             key={e.cca2}
             id={e.cca2}
@@ -43,34 +60,34 @@ const CountryList = ({countries}) => {
         )
       ).slice(page*countryPerPage, (page*countryPerPage) + countryPerPage)
     )
-    setCountriesCount(orderedCountries.length);
+    setCountriesCount(sortedCountries.length);
   }
 
   function setFilter(filterName) {
-    if(filterName === orderBy) {
-      switch(ordred) {
+    if(filterName === filterBy) {
+      switch(orderBy) {
         case "":
-          setOrdred("asc");
+          setOrderBy("asc");
           break;
         case "asc":
-          setOrdred("desc");
+          setOrderBy("desc");
           break;
         case "desc":
-          setOrdred("");
+          setOrderBy("");
           break;
       }
     }
     else {
-      setOrderBy(filterName);
-      setOrdred("asc");
+      setFilterBy(filterName);
+      setOrderBy("asc");
     }
   }
 
   function setArrow(orderName) {
     return `
       ${styles.arrow}
-      ${(orderBy === orderName && ordred==="asc") ? styles.arrowTop : 
-      (orderBy === orderName && ordred==="desc") ? styles.arrowDown : null}
+      ${(filterBy === orderName && orderBy==="asc") ? styles.arrowTop : 
+      (filterBy === orderName && orderBy==="desc") ? styles.arrowDown : null}
     `
   }
 
