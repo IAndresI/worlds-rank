@@ -1,0 +1,168 @@
+.sideBarBackground {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: transparent;
+  transform: translateX(100%);
+  transition: all 0.5s ease-in-out; 
+  opacity: 1;
+}
+
+.sideBarBackgroundCloseBtn {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+}
+
+.sideBar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  opacity: 1;
+  width: 40%;
+  height: 100%;
+  background-color: var(--background-color-dark);
+  transform: translateX(100%);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.sideBarBackgroundCloseBtn {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  background-color: #000000;
+  opacity: .3;
+  cursor: pointer;
+
+  &::before, &::after {
+    content: "";
+    width: 4px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    display: block;
+    position: absolute;
+    left: 30px;
+    top: 10px;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.open {
+  animation: openAnimation .5s forwards;
+
+  .sideBar {
+    animation: openAnimation .5s .5s forwards;
+  }
+}
+
+.close {
+  opacity: 1;
+  animation: closeAnimation .5s forwards;
+  .sideBar {
+    animation: closeAnimation .5s forwards;
+  }
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.sideBarForm {
+  height: 80%;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.formInput {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color-dark);
+}
+
+.formItemName {
+  min-width: 30%;
+  text-align: left;
+}
+
+.applyBtn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 20px 0px;
+  width: 80%;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  transition: all 0.5s;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: #000000;
+  }
+}
+
+[data-theme="dark"] .applyBtn {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+
+  &:hover, &:focus {
+    background-color: var(--primary-color);
+    color: #000000;
+  }
+}
+
+@keyframes openAnimation {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes closeAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

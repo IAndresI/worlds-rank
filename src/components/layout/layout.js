@@ -2,9 +2,9 @@ import styles from './layout.module.scss';
 import Head from 'next/head';
 import Header from '../header';
 
-const Layout = ({children, title="World Rank"}) => {
+const Layout = ({children, title="World Rank", openFilter}) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${openFilter ? styles.scrollDisabled : ''}`}>
       <Head>
         <title>{title}</title>
         <link rel="icon" href="./favicon.ico"/>
@@ -16,7 +16,7 @@ const Layout = ({children, title="World Rank"}) => {
         </main>
       </div>
       <footer className={styles.footer}>
-        IAndresI
+        Dreymandinn
       </footer>
     </div>
   );

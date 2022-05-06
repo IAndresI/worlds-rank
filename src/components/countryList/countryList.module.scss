@@ -15,7 +15,6 @@
     align-items: center;
     padding: 10px 0 15px;
     cursor: pointer;
-    transition: all 0.5s;
 
     &:hover,
     &:focus {
@@ -36,7 +35,6 @@
     padding: 10px 0 15px;
     cursor: pointer;
     color: tomato;
-    transition: all 0.5s;
 
     &:hover,
     &:focus {
@@ -60,7 +58,6 @@
   background-image: url(../../assets//images/arrow-top.svg);
   margin-left: 10px;
   opacity: 0;
-  transition: all 0.5s;
 }
 
 .arrow.arrowTop {
@@ -70,6 +67,32 @@
 .arrow.arrowDown {
   opacity: 1;
   transform: rotate(180deg);
+}
+
+.sideBarOpenBtn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 10px 40px;
+  border-radius: 10px;
+  transition: all 0.5s;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: #000000;
+  }
+}
+
+[data-theme="dark"] .sideBarOpenBtn {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+
+  &:hover, &:focus {
+    background-color: var(--primary-color);
+    color: #000000;
+  }
 }
 
 @media screen and (max-width:992px) {

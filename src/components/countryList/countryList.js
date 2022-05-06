@@ -3,7 +3,7 @@ import CountryRow from '../countryRow';
 import styles from './countryList.module.scss';
 import Pagination from '../pagination';
 
-const CountryList = ({countries}) => {
+const CountryList = ({countries, setOpenFilter}) => {
   const [filterBy, setFilterBy] = useState("default");
   const [orderBy, setOrderBy] = useState("");
   const [allCountries, setAllCountries] = useState(null)
@@ -94,6 +94,12 @@ const CountryList = ({countries}) => {
   return (
     <section>
       <div className="container">
+        <button 
+          className={styles.sideBarOpenBtn}
+          onClick={() => setOpenFilter(true)}
+        >
+          Other filtres
+        </button>
         <div className={styles.header}>
           <button
             onClick={() => setFilter("name")}
