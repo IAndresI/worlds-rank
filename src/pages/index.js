@@ -11,6 +11,10 @@ export default function Home({countries}) {
 
   const [regions, setRegions] = useState([])
   const [subRegions, setSubRegions] = useState([])
+  const [continents, setContinents] = useState([])
+  const [timezones, setTimezones] = useState([])
+  const [capitals, setCapitals] = useState([])
+  const [currencies, setCurrencies] = useState([])
   const [minMaxArea, setMinMaxArea] = useState({
     min: -1,
     max: 0
@@ -29,8 +33,8 @@ export default function Home({countries}) {
     const countriesRegions = [...new Set(countries.map(country => country.region))].sort();
     const countriesSubRegions = [...new Set(countries.map(country => country.subregion))].sort();
 
-    setSubRegions(countriesSubRegions);
-    setRegions(countriesRegions);
+    setSubRegions(countriesSubRegions.map(el => ({value: el, label: el})));
+    setRegions(countriesRegions.map(el => ({value: el, label: el})));
 
     // Area
     const areas = countries.map(country => +country.area);
@@ -41,6 +45,46 @@ export default function Home({countries}) {
       max: maxArea
     })
 
+    // Continents
+
+    const countriesContinents = [...new Set(countries.map(country => country.continents[0]))].sort();
+    setContinents(countriesContinents.map(el => ({value: el, label: el})))
+
+    // Timezones
+
+    let zones = [];
+    zones.push({value: 'UTC', label: 'UTC'})
+    for (let i = 1; i < 13; i++) {
+      let positiveZone = `UTC+${i < 10 ? `0${i}` : i}:00`;
+      let negativeZone = `UTC-${i < 10 ? `0${i}` : i}:00`;
+      zones.push({value: positiveZone, label: positiveZone})
+      zones.push({value: negativeZone, label: negativeZone})
+    }
+    setTimezones(zones);
+
+    // Capitals
+
+    const countriesCapitals = [...new Set(countries.map(country => country.capital ? country.capital[0] : null))].sort();
+    setCapitals(countriesCapitals.map(el => ({value: el, label: el})))
+
+    // Currencies
+
+    let curr = [];
+    let unicCurr = [];
+    countries.map(country => {
+      if(!country.currencies) return
+      const currArr = Object.keys(country.currencies);
+      currArr.forEach(currEl => curr.push({
+        value: currEl, 
+        label: `${country.currencies[currEl].symbol ? country.currencies[currEl].symbol : ''} ${country.currencies[currEl].name}`
+      }))
+    })
+    curr.forEach(el => {
+      if(!unicCurr.some(e => e.value === el.value)) unicCurr.push(el);
+    })
+
+    unicCurr.sort((a,b) => a.label.localeCompare(b.label));
+    setCurrencies(unicCurr);
 
   }, [])
   
@@ -55,6 +99,10 @@ export default function Home({countries}) {
         regions={regions}
         subRegions={subRegions}
         minMaxArea={minMaxArea}
+        timezones={timezones}
+        capitals={capitals}
+        currencies={currencies}
+        continents={continents}
       />
     </Layout >
   )

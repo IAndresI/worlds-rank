@@ -83,6 +83,10 @@
     border: 1px solid var(--primary-color);
     color: #000000;
   }
+
+  @media screen and (max-width: 565px) {
+    width: 100%;
+  }
 }
 
 [data-theme="dark"] .sideBarOpenBtn {

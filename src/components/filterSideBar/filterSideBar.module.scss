@@ -29,6 +29,29 @@
   transform: translateX(100%);
   overflow-y: scroll;
   overflow-x: hidden;
+
+  @media screen and (max-width: 1100px) {
+    width: 60%;
+  }
+
+  @media screen and (max-width: 785px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 400px) {
+    .formLabel {
+      flex-direction: column;
+
+      span {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .formInput {
+        width: 100%;
+      }
+    }
+  }
 }
 
 .sideBarBackgroundCloseBtn {
@@ -58,6 +81,17 @@
   &::after {
     transform: rotate(-45deg);
   }
+
+  @media screen and (max-width: 785px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    z-index: 3;
+    width: 70px;
+    height: 70px;
+  }
 }
 
 .open {
@@ -65,6 +99,12 @@
 
   .sideBar {
     animation: openAnimation .5s .5s forwards;
+  }
+
+  @media screen and (max-width: 785px) {
+    .sideBar {
+      animation: openAnimation .5s forwards;
+    }
   }
 }
 
@@ -84,7 +124,7 @@
 }
 
 .sideBarForm {
-  height: 80%;
+  margin-bottom: 50px;
 }
 
 .formItem {
