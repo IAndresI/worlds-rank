@@ -145,10 +145,6 @@
 
 .formInput {
   width: 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--background-color-dark);
 }
 
 .formItemName {
@@ -166,6 +162,7 @@
   margin: 0 auto;
   transition: all 0.5s;
   border: 1px solid transparent;
+  margin-bottom: 30px;
   cursor: pointer;
 
   &:hover, &:focus {
@@ -173,6 +170,29 @@
     border: 1px solid var(--primary-color);
     color: #000000;
   }
+}
+
+.formAreaInputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formAreaMinMax {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.formAreaMinMaxInput {
+  color: var(--text-color);
+  border: 1px solid var(--primary-color);
+  width: 100px;
+  padding: 5px;
+  cursor: 'pointer';
+  transition: "all .3s";
+  background-color: transparent;
+  border-radius: 6px;
 }
 
 [data-theme="dark"] .applyBtn {

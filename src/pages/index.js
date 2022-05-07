@@ -16,8 +16,8 @@ export default function Home({countries}) {
   const [capitals, setCapitals] = useState([])
   const [currencies, setCurrencies] = useState([])
   const [minMaxArea, setMinMaxArea] = useState({
-    min: -1,
-    max: 0
+    min: 0,
+    max: 1
   })
 
   const searched = countries.filter(e => {

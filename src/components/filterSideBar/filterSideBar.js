@@ -10,6 +10,11 @@ const selectStyles = {
     backgroundColor: "var(--background-color)",
     borderRadius: 6,
   }),
+  menuPortal: (provided, state) => ({
+    ...provided,
+    backgroundColor: "var(--background-color)",
+    borderRadius: 6,
+  }),
   option: (provided, state) => ({
     ...provided,
     borderBottom: '1px dotted pink',
@@ -17,10 +22,12 @@ const selectStyles = {
     padding: 20,
     cursor: 'pointer',
     transition: "all .3s",
+    backgroundColor: state.isFocused ? "var(--primary-color)" : "transparent",
     borderRadius: 6,
     "&:hover, &:focus, &:active": {
-      backgroundColor:"var(--primary-color)"
-    }
+      backgroundColor:"var(--primary-color)",
+      outline: "transparent"
+    },
   }),
   control: () => ({
     width: "100%",
@@ -36,11 +43,19 @@ const selectStyles = {
     borderRadius: 6,
     margin: "2px 2px 2px 0",
     backgroundColor: 'var(--text-color-secondary)',
-    "div:nth-child(2)": {
-      svg: {
-        color: 'red',
-      }
+  }),
+  multiValueRemove: () => ({
+    color: 'red',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: "5px",
+    transition: "all .3s",
+    "&:hover": {
+      borderRadius: 6,
+      backgroundColor:"rgb(250, 149, 131);"
     }
+
   }),
   clearIndicator: () => ({
     display: 'flex',
@@ -52,7 +67,7 @@ const selectStyles = {
     }
   }),
   singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
+    const opacity = state.isDisabled ? 0.1 : 1;
     const transition = 'opacity 300ms';
 
     return { ...provided, opacity, transition };
@@ -60,13 +75,40 @@ const selectStyles = {
 }
 
 const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxArea, continents, timezones, capitals, currencies}) => {
-  const [userMinMaxArea, setUserMixManArea] = useState([minMaxArea.min, minMaxArea.max])
+  const [selectedMinMaxArea, setSelectedMixManArea] = useState([])
   const [selectedRegion, setSelectedRegion] = useState([])
   const [selectedSubRegion, setSelectedSubRegion] = useState([])
   const [selectedContinent, setSelectedContinent] = useState([])
   const [selectedTimezones, setSelectedTimezones] = useState([])
   const [selectedCapital, setSelectedCapital] = useState([])
   const [selectedCurrencies, setSelectedCurrencies] = useState([])
+
+  const handleMinMaxAreaChange = (event) => {
+    const numberReg = new RegExp('^[0-9]*$');
+    const type = event.target.name;
+    const value = +event.target.value
+
+    if (!numberReg.test(value)==false) {
+      switch(type) {
+        case 'min':
+          if(value > selectedMinMaxArea[1]){
+            
+            if(value <= minMaxArea.max) setSelectedMixManArea([value, value]);
+            else break;
+          } 
+          else setSelectedMixManArea((prev) => ([value, prev[1] ? prev[1] : minMaxArea.max]));
+          break;
+        case 'max': 
+          if(value > minMaxArea.max) return;
+          if(value < selectedMinMaxArea[0]) setSelectedMixManArea([value, value]);
+          else setSelectedMixManArea((prev) => ([prev[0] ? prev[0] : minMaxArea.min, value]));
+          break;
+        default:
+          return;
+      }
+    }
+  }
+
   return (
     <div className={`${styles.sideBarBackground} ${openFilter ? styles.open : styles.close}`}>
       <button 
@@ -76,30 +118,6 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
        <div className={styles.sideBar}>
         <h3 className={styles.title}>Filter</h3>
         <form className={styles.sideBarForm}>
-          {/* <div className={styles.formItem}>
-            <label className={styles.formLabel}>
-              <span className={styles.formItemName}>
-                Region
-              </span>
-              <select className={styles.formInput}>
-                {
-                  regions.map(region => <option key={region} value={region}>{region}</option>)
-                }
-              </select>
-            </label>
-          </div> */}
-          {/* <div className={styles.formItem}>
-            <label className={styles.formLabel}>
-              <span className={styles.formItemName}>
-                Sub Region
-              </span>
-              <select className={styles.formInput}>
-                {
-                  subRegions.map(region => <option key={region} value={region}>{region}</option>)
-                }
-              </select>
-            </label>
-          </div> */}
           <div className={styles.formItem}>
             <label className={styles.formLabel}>
               <span className={styles.formItemName}>
@@ -207,13 +225,14 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
               <span className={styles.formItemName}>
                 Area
               </span>
-              <Range
+              <div className={styles.formAreaInputs}>
+                <Range
                   min={minMaxArea.min}
                   max={minMaxArea.max}
                   step={10000}
-                  values={userMinMaxArea}
+                  values={selectedMinMaxArea.length ? selectedMinMaxArea : [minMaxArea.min, minMaxArea.max]}
                   onChange={(values) => {
-                    setUserMixManArea(values);
+                    setSelectedMixManArea(values);
                   }}
                   renderTrack={({ props, children }) => {
                     return (
@@ -244,6 +263,21 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                     />
                   )}
                 />
+                <div className={styles.formAreaMinMax}>
+                  <input 
+                    value={selectedMinMaxArea[0] || minMaxArea.min} 
+                    name="min"
+                    className={styles.formAreaMinMaxInput}
+                    onChange={(e) => handleMinMaxAreaChange(e)}
+                  />
+                  <input 
+                    value={selectedMinMaxArea[1] || minMaxArea.max}
+                    name="max"
+                    className={styles.formAreaMinMaxInput}
+                    onChange={(e) => handleMinMaxAreaChange(e)}
+                  />
+                </div>
+              </div>
             </label>
           </div>
         </form>
