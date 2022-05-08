@@ -100,36 +100,45 @@ const CountryList = ({countries, setOpenFilter}) => {
         >
           Other filtres
         </button>
-        <div className={styles.header}>
-          <button
-            onClick={() => setFilter("name")}
-            className={styles.header__item}>
-              Name
-              <i className={setArrow("name")} />
-          </button>
-          <button 
-            onClick={() => setFilter("population")}
-            className={styles.header__item}>
-              Population
-              <i className={setArrow("population")} />
-            </button>
-          <button 
-            onClick={() => setFilter("area")}
-            className={styles.header__item}>
-              Area
-              <i className={setArrow("area")} />
-            </button>
-          <button 
-            onClick={() => setFilter("gini")}
-            className={styles.header__item}>
-              Gini
-              <i className={setArrow("gini")} />
-            </button>
-        </div>
         {
-          allCountries
+          countries.length ?
+          (
+            <>
+              <div className={styles.header}>
+                <button
+                  onClick={() => setFilter("name")}
+                  className={styles.header__item}>
+                    Name
+                    <i className={setArrow("name")} />
+                </button>
+                <button 
+                  onClick={() => setFilter("population")}
+                  className={styles.header__item}>
+                    Population
+                    <i className={setArrow("population")} />
+                  </button>
+                <button 
+                  onClick={() => setFilter("area")}
+                  className={styles.header__item}>
+                    Area
+                    <i className={setArrow("area")} />
+                  </button>
+                <button 
+                  onClick={() => setFilter("gini")}
+                  className={styles.header__item}>
+                    Gini
+                    <i className={setArrow("gini")} />
+                  </button>
+              </div>
+              {
+                allCountries
+              }
+              <Pagination itemsPerPage={countryPerPage} itemsCount={countriesCount} setPage={setPage} currentPage={page} />
+            </>
+          )
+          :
+          <h2 className={styles.nothingFound}>Nothing found</h2>
         }
-        <Pagination itemsPerPage={countryPerPage} itemsCount={countriesCount} setPage={setPage} currentPage={page} />
       </div>
     </section>
   );

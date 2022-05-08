@@ -78,11 +78,11 @@ export default function Home({countries}) {
             searched = searched.filter(country => country.languages ? Object.keys(country.languages).some(key => lan.includes(key)) : false);
             break;
         }
+        sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOption))
       }
     }
 
     setFiltredCountries(searched);
-    
   }, [selectedOption, search])
 
   useEffect(() => {
@@ -165,6 +165,12 @@ export default function Home({countries}) {
     }
     countriesLanguages.sort((a,b) => a.label < b.label ? -1 : 1);
     setAviableFilterOptions((prev) => ({...prev, languages: countriesLanguages}));
+
+    const savedOptions = JSON.parse(sessionStorage.getItem("selectedOptions"));
+
+    if(savedOptions) {
+      setSelectedOption(savedOptions)
+    }
 
   }, [])
   

@@ -290,7 +290,7 @@ const FilterSideBar = ({
               </span>
               <div className={styles.formAreaInputs}>
                 <Range
-                  min={minMaxArea[0]}
+                  min={minMaxArea[0]-1}
                   max={minMaxArea[1]}
                   step={10000}
                   values={tempSelectedOption.selectedMinMaxArea.length ? tempSelectedOption.selectedMinMaxArea : selectedMinMaxArea.length ? selectedMinMaxArea : [minMaxArea[0], minMaxArea[1]]}

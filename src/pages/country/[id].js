@@ -2,6 +2,7 @@ import styles from './country.module.scss';
 import Layout from '../../components/layout';
 import WolrdsRankService from '../../api';
 import Link from 'next/Link';
+import Image from 'next/image';
 
 function getObjectValue(obj) {
   const objProps = Object.keys(obj);
@@ -49,7 +50,15 @@ function setNeighbourCountries(data) {
       <a className={styles.neighbourLink}>
         <li key={e.cca2} className={styles.item}>
           <div className={styles.neighbourFlagContainer}>
-            <img src={e.flags.png} className={styles.neighbourFlag} alt="flag" />
+            <Image
+              className={styles.neighbourFlag}
+              width={80} 
+              height={60}
+              placeholder="blur"  
+              src={e.flags.png}
+              alt="flag"
+              objectFit="cover"
+            />
           </div>
           <div className={styles.neighbourName}>{e.name.common}</div>
         </li>
@@ -69,7 +78,14 @@ const Country = ({country, neighbourCountries}) => {
           <div className={styles.inner}>
             <div className={styles.smallContainer}>
               <div className={styles.imageContainer}>
-                <img className={styles.image} src={country.flags.png} alt="flag"/>
+                <Image 
+                  className={styles.image} 
+                  width={400} 
+                  height={300} 
+                  placeholder="blur"  
+                  src={country.flags.png} 
+                  alt="flag"
+                />
               </div>
               <h2 className={styles.name}>
                 {country.name.official}
@@ -125,7 +141,7 @@ const Country = ({country, neighbourCountries}) => {
 
 export const getServerSideProps = async ({params}) => {
   const [country] = await WolrdsRankService.getCountry(params.id);
-  const neighbourCountries = country?.borders?.length > 0 ? await WolrdsRankService.getCountry(`?codes=${country.borders.join(";")}`) : null;
+  const neighbourCountries = country?.borders?.length > 0 ? await WolrdsRankService.getCountry(`?codes=${country.borders.join(",")}`) : null;
 
   return {
     props: {

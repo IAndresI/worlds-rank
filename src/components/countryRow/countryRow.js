@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './countryRow.module.scss';
 import Link from 'next/Link';
+import Image from 'next/image';
+
 
 const CountryRow = ({name, flag, area, gini, population, id}) => {
 
@@ -11,7 +13,17 @@ const CountryRow = ({name, flag, area, gini, population, id}) => {
       <a className={styles.link}>
         <div className={styles.row}>
           <div className={styles.column__left}>
-            <img src={flag} alt="flag" className={styles.flag}/>
+            <div className={styles.flag}>
+              <Image
+                className={styles.flag}
+                width={50} 
+                height={37.7} 
+                placeholder="blur"  
+                src={flag}
+                alt="flag"
+              />
+            </div>
+            
             <span>{name}</span>
           </div>
           <div className={styles.column}>

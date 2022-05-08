@@ -89,6 +89,12 @@
   }
 }
 
+.nothingFound {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
 [data-theme="dark"] .sideBarOpenBtn {
   border: 1px solid var(--primary-color);
   background-color: transparent;
