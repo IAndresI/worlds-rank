@@ -1,7 +1,7 @@
 import styles from './country.module.scss';
 import Layout from '../../components/layout';
 import WolrdsRankService from '../../api';
-import Link from 'next/Link';
+import NextLink from 'next/link';
 import Image from 'next/image';
 
 function getObjectValue(obj) {
@@ -46,7 +46,7 @@ function setNeighbourCountries(data) {
   return data ? 
   (
     data.map(e => (
-    <Link key={e.cca2} href={`/country/${e.cca2}`}>
+    <NextLink key={e.cca2} href={`/country/${e.cca2}`}>
       <a className={styles.neighbourLink}>
         <li key={e.cca2} className={styles.item}>
           <div className={styles.neighbourFlagContainer}>
@@ -63,7 +63,7 @@ function setNeighbourCountries(data) {
           <div className={styles.neighbourName}>{e.name.common}</div>
         </li>
       </a>
-    </Link>
+    </NextLink>
   ))
   )
   :
