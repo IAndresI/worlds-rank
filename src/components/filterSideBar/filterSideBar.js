@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Range } from 'react-range';
 import Select from 'react-select';
 
@@ -66,6 +66,9 @@ const selectStyles = {
       color:"red"
     }
   }),
+  ValueContainer: () => ({
+    color: '#ffffff !important',
+  }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.1 : 1;
     const transition = 'opacity 300ms';
@@ -74,14 +77,52 @@ const selectStyles = {
   }
 }
 
-const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxArea, continents, timezones, capitals, currencies}) => {
-  const [selectedMinMaxArea, setSelectedMixManArea] = useState([])
-  const [selectedRegion, setSelectedRegion] = useState([])
-  const [selectedSubRegion, setSelectedSubRegion] = useState([])
-  const [selectedContinent, setSelectedContinent] = useState([])
-  const [selectedTimezones, setSelectedTimezones] = useState([])
-  const [selectedCapital, setSelectedCapital] = useState([])
-  const [selectedCurrencies, setSelectedCurrencies] = useState([])
+const FilterSideBar = ({
+  openFilter, 
+  setOpenFilter,
+  regions, 
+  subRegions, 
+  minMaxArea, 
+  continents, 
+  timezones, 
+  capitals, 
+  currencies, 
+  languages,
+  selectedMinMaxArea,
+  selectedRegions,
+  selectedSubregions,
+  selectedContinents,
+  selectedTimezones,
+  selectedCapitals,
+  selectedCurrencys,
+  selectedLanguages,
+  setSelectedOption
+}) => {
+
+  const [tempSelectedOption, setTempSelectedOption] = useState({
+    selectedMinMaxArea: selectedMinMaxArea,
+    selectedRegions: selectedRegions,
+    selectedSubregions: selectedSubregions,
+    selectedContinents: selectedContinents,
+    selectedTimezones: selectedTimezones,
+    selectedCapitals: selectedCapitals,
+    selectedCurrencys: selectedCurrencys,
+    selectedLanguages: selectedLanguages,
+  })
+
+  useEffect(() => {
+    setTempSelectedOption({
+      selectedMinMaxArea: selectedMinMaxArea,
+      selectedRegions: selectedRegions,
+      selectedSubregions: selectedSubregions,
+      selectedContinents: selectedContinents,
+      selectedTimezones: selectedTimezones,
+      selectedCapitals: selectedCapitals,
+      selectedCurrencys: selectedCurrencys,
+      selectedLanguages: selectedLanguages,
+    })
+  }, [openFilter])
+  
 
   const handleMinMaxAreaChange = (event) => {
     const numberReg = new RegExp('^[0-9]*$');
@@ -92,16 +133,21 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
       switch(type) {
         case 'min':
           if(value > selectedMinMaxArea[1]){
-            
-            if(value <= minMaxArea.max) setSelectedMixManArea([value, value]);
-            else break;
+            if(value <= minMaxArea[1]) 
+              setTempSelectedOption((prev) => ({...prev, selectedMinMaxArea: [value, value]}));
+            else 
+              break;
           } 
-          else setSelectedMixManArea((prev) => ([value, prev[1] ? prev[1] : minMaxArea.max]));
+          else 
+            setTempSelectedOption((prev) => ({...prev, selectedMinMaxArea: [value, prev[1] ? prev[1] : minMaxArea[1]]}))
           break;
         case 'max': 
-          if(value > minMaxArea.max) return;
-          if(value < selectedMinMaxArea[0]) setSelectedMixManArea([value, value]);
-          else setSelectedMixManArea((prev) => ([prev[0] ? prev[0] : minMaxArea.min, value]));
+          if(value > minMaxArea[1]) 
+            return;
+          if(value < selectedMinMaxArea[0]) 
+            setTempSelectedOption((prev) => ({...prev, selectedMinMaxArea: [value, value]}));
+          else 
+            setTempSelectedOption((prev) => ({...prev, selectedMinMaxArea: [prev[0] ? prev[0] : minMaxArea[0], value]}));
           break;
         default:
           return;
@@ -128,9 +174,9 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={continents}
-                value={selectedContinent}
+                value={tempSelectedOption.selectedContinents || selectedContinents}
                 onChange={(selectedOption) => {
-                  setSelectedContinent(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedContinents: selectedOption}));
                 }}
               />
             </label>
@@ -145,9 +191,9 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={regions}
-                value={selectedRegion}
+                value={tempSelectedOption.selectedRegions || selectedRegions}
                 onChange={(selectedOption) => {
-                  setSelectedRegion(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedRegions: selectedOption}));
                 }}
               />
             </label>
@@ -162,9 +208,9 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={subRegions}
-                value={selectedSubRegion}
+                value={tempSelectedOption.selectedSubregions || selectedSubregions}
                 onChange={(selectedOption) => {
-                  setSelectedSubRegion(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedSubregions: selectedOption}));
                 }}
               />
             </label>
@@ -179,9 +225,9 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={capitals}
-                value={selectedCapital}
+                value={tempSelectedOption.selectedCapitals || selectedCapitals}
                 onChange={(selectedOption) => {
-                  setSelectedCapital(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedCapitals: selectedOption}));
                 }}
               />
             </label>
@@ -196,9 +242,9 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={timezones}
-                value={selectedTimezones}
+                value={tempSelectedOption.selectedTimezones || selectedTimezones}
                 onChange={(selectedOption) => {
-                  setSelectedTimezones(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedTimezones: selectedOption}));
                 }}
               />
             </label>
@@ -213,9 +259,26 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 styles={selectStyles}
                 isMulti 
                 options={currencies}
-                value={selectedCurrencies}
+                value={tempSelectedOption.selectedCurrencys || selectedCurrencys}
                 onChange={(selectedOption) => {
-                  setSelectedCurrencies(selectedOption);
+                  setTempSelectedOption((prev) => ({...prev, selectedCurrencys: selectedOption}));
+                }}
+              />
+            </label>
+          </div>
+          <div className={styles.formItem}>
+            <label className={styles.formLabel}>
+              <span className={styles.formItemName}>
+                Languages
+              </span>
+              <Select
+                className={styles.formInput}
+                styles={selectStyles}
+                isMulti 
+                options={languages}
+                value={tempSelectedOption.selectedLanguages || selectedLanguages}
+                onChange={(selectedOption) => {
+                  setTempSelectedOption((prev) => ({...prev, selectedLanguages: selectedOption}));
                 }}
               />
             </label>
@@ -227,12 +290,12 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
               </span>
               <div className={styles.formAreaInputs}>
                 <Range
-                  min={minMaxArea.min}
-                  max={minMaxArea.max}
+                  min={minMaxArea[0]}
+                  max={minMaxArea[1]}
                   step={10000}
-                  values={selectedMinMaxArea.length ? selectedMinMaxArea : [minMaxArea.min, minMaxArea.max]}
+                  values={tempSelectedOption.selectedMinMaxArea.length ? tempSelectedOption.selectedMinMaxArea : selectedMinMaxArea.length ? selectedMinMaxArea : [minMaxArea[0], minMaxArea[1]]}
                   onChange={(values) => {
-                    setSelectedMixManArea(values);
+                    setTempSelectedOption((prev) => ({...prev, selectedMinMaxArea: values}));
                   }}
                   renderTrack={({ props, children }) => {
                     return (
@@ -265,13 +328,13 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
                 />
                 <div className={styles.formAreaMinMax}>
                   <input 
-                    value={selectedMinMaxArea[0] || minMaxArea.min} 
+                    value={tempSelectedOption.selectedMinMaxArea[0] || selectedMinMaxArea[0] ||  minMaxArea[0]} 
                     name="min"
                     className={styles.formAreaMinMaxInput}
                     onChange={(e) => handleMinMaxAreaChange(e)}
                   />
                   <input 
-                    value={selectedMinMaxArea[1] || minMaxArea.max}
+                    value={tempSelectedOption.selectedMinMaxArea[1] || selectedMinMaxArea[1] ||  minMaxArea[1]}
                     name="max"
                     className={styles.formAreaMinMaxInput}
                     onChange={(e) => handleMinMaxAreaChange(e)}
@@ -283,7 +346,10 @@ const FilterSideBar = ({openFilter, setOpenFilter,regions, subRegions, minMaxAre
         </form>
         <button 
           className={styles.applyBtn}
-          onClick={() => setOpenFilter(false)}
+          onClick={() => {
+            setSelectedOption(tempSelectedOption)
+            setOpenFilter(false)}
+          }
         >
           Apply
         </button>

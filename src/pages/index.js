@@ -8,24 +8,82 @@ import FilterSideBar from '../components/filterSideBar';
 export default function Home({countries}) {
   const [search, setSearch] = useState("");
   const [openFilter, setOpenFilter] = useState(false);
+  const [filtredCountries, setFiltredCountries] = useState(countries)
 
-  const [regions, setRegions] = useState([])
-  const [subRegions, setSubRegions] = useState([])
-  const [continents, setContinents] = useState([])
-  const [timezones, setTimezones] = useState([])
-  const [capitals, setCapitals] = useState([])
-  const [currencies, setCurrencies] = useState([])
-  const [minMaxArea, setMinMaxArea] = useState({
-    min: 0,
-    max: 1
+  const [aviableFilterOptions, setAviableFilterOptions] = useState({
+    regions: [],
+    subRegions: [],
+    continents: [],
+    timezones: [],
+    capitals: [],
+    currencies: [],
+    languages: [],
+    minMaxArea: [0,1],
   })
 
-  const searched = countries.filter(e => {
-    return e.name.common.toLowerCase().includes(search) || 
-    e.region.toLowerCase().includes(search) || 
-    e?.subregion?.toLowerCase().includes(search)
+  const [selectedOption, setSelectedOption] = useState({
+    selectedMinMaxArea: [],
+    selectedRegions: [],
+    selectedSubregions: [],
+    selectedContinents: [],
+    selectedTimezones: [],
+    selectedCapitals: [],
+    selectedCurrencys: [],
+    selectedLanguages: []
+  })
+
+  const normalizeSelectData = (data) => {
+    return data.map(el => el.value);
+  }
+
+  useEffect(() => {
+    let searched = countries.filter(e => {
+      return e.name.common.toLowerCase().includes(search) || 
+      e.region.toLowerCase().includes(search) || 
+      e?.subregion?.toLowerCase().includes(search)
+      }
+    )
+    for (const prop in selectedOption) {
+      if (selectedOption[prop].length) {
+        switch (prop) {
+          case "selectedMinMaxArea":
+            searched = searched.filter(country => country.area >= +selectedOption[prop][0] && country.area <= +selectedOption[prop][1]);
+            break;
+          case "selectedRegions":
+            const reg = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => reg.includes(country.region));
+            break;
+          case "selectedSubregions":
+            const sub = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => sub.includes(country.subregion));
+            break;
+          case "selectedContinents":
+            const cont = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => cont.includes(...country.continents));
+            break;
+          case "selectedTimezones":
+            const timez = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => timez.includes(...country.timezones));
+            break;
+          case "selectedCapitals":
+            const cap = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => country.capital ? cap.includes(...country.capital) : false);
+            break;
+          case "selectedCurrencys":
+            const curr = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => country.currencies ? Object.keys(country.currencies).some(key => curr.includes(key)) : false);
+            break;
+          case "selectedLanguages":
+            const lan = normalizeSelectData(selectedOption[prop])
+            searched = searched.filter(country => country.languages ? Object.keys(country.languages).some(key => lan.includes(key)) : false);
+            break;
+        }
+      }
     }
-  )
+
+    setFiltredCountries(searched);
+    
+  }, [selectedOption, search])
 
   useEffect(() => {
 
@@ -33,22 +91,19 @@ export default function Home({countries}) {
     const countriesRegions = [...new Set(countries.map(country => country.region))].sort();
     const countriesSubRegions = [...new Set(countries.map(country => country.subregion))].sort();
 
-    setSubRegions(countriesSubRegions.map(el => ({value: el, label: el})));
-    setRegions(countriesRegions.map(el => ({value: el, label: el})));
+    setAviableFilterOptions((prev) => ({...prev, subRegions: countriesSubRegions.map(el => ({value: el, label: el}))}));
+    setAviableFilterOptions((prev) => ({...prev, regions: countriesRegions.map(el => ({value: el, label: el}))}));
 
     // Area
     const areas = countries.map(country => +country.area);
     const [maxArea, minArea] = [Math.max(...areas), Math.min(...areas)]
 
-    setMinMaxArea({
-      min: minArea < 0 ? 0 : minArea,
-      max: maxArea
-    })
+    setAviableFilterOptions((prev) => ({...prev, minMaxArea: [minArea < 0 ? 0 : minArea, maxArea]}));
 
     // Continents
 
     const countriesContinents = [...new Set(countries.map(country => country.continents[0]))].sort();
-    setContinents(countriesContinents.map(el => ({value: el, label: el})))
+    setAviableFilterOptions((prev) => ({...prev, continents: countriesContinents.map(el => ({value: el, label: el}))}));
 
     // Timezones
 
@@ -60,12 +115,12 @@ export default function Home({countries}) {
       zones.push({value: positiveZone, label: positiveZone})
       zones.push({value: negativeZone, label: negativeZone})
     }
-    setTimezones(zones);
+    setAviableFilterOptions((prev) => ({...prev, timezones: zones}));
 
     // Capitals
 
     const countriesCapitals = [...new Set(countries.map(country => country.capital ? country.capital[0] : null))].sort();
-    setCapitals(countriesCapitals.map(el => ({value: el, label: el})))
+    setAviableFilterOptions((prev) => ({...prev, capitals: countriesCapitals.map(el => ({value: el, label: el}))}));
 
     // Currencies
 
@@ -84,25 +139,46 @@ export default function Home({countries}) {
     })
 
     unicCurr.sort((a,b) => a.label.localeCompare(b.label));
-    setCurrencies(unicCurr);
+    setAviableFilterOptions((prev) => ({...prev, currencies: unicCurr}));
+
+    // Language
+
+    function getObjectValue(obj) {
+      if(!obj)
+        return;
+      const objProps = Object.keys(obj);
+      let arr = [];
+      objProps.forEach(prop => {
+        arr.push({value: prop, label: obj[prop]});
+      })    
+      return arr;
+    }
+
+    const languageList = [];
+    let countriesLanguages = countries.map(country => country.languages);
+    countriesLanguages.forEach(language => language ? languageList.push(...getObjectValue(language)) : null);
+    countriesLanguages = [];
+    for (let i = 0; i < languageList.length; i++) {
+      if(countriesLanguages.some(el => el.value === languageList[i].value))
+        continue;
+      countriesLanguages.push(languageList[i])
+    }
+    countriesLanguages.sort((a,b) => a.label < b.label ? -1 : 1);
+    setAviableFilterOptions((prev) => ({...prev, languages: countriesLanguages}));
 
   }, [])
   
   
   return (
     <Layout openFilter={openFilter}>
-      <Search countriesCount={searched.length} setSearch={setSearch}/>
-      <CountryList countries={searched} setOpenFilter={setOpenFilter}/>
+      <Search countriesCount={filtredCountries.length} setSearch={setSearch}/>
+      <CountryList countries={filtredCountries} setOpenFilter={setOpenFilter}/>
       <FilterSideBar 
         openFilter={openFilter} 
         setOpenFilter={setOpenFilter}
-        regions={regions}
-        subRegions={subRegions}
-        minMaxArea={minMaxArea}
-        timezones={timezones}
-        capitals={capitals}
-        currencies={currencies}
-        continents={continents}
+        {...aviableFilterOptions}
+        {...selectedOption}
+        setSelectedOption={setSelectedOption}
       />
     </Layout >
   )
