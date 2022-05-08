@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styles from './header.module.scss';
-import Link from 'next/Link';
+import NextLink from 'next/link';
 
 const Header = () => {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -11,14 +11,14 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link href="/">
+      <NextLink href="/">
         <a>
           <h1 className={styles.header__logo}>
             World <span className={styles.header__green}>Ranks</span>
             <span className={styles.header__image}></span>
           </h1>
         </a>
-      </Link>
+      </NextLink>
       <button onClick={() => {
         localStorage.setItem("dark-theme", localStorage.getItem("dark-theme") === "false" ? "true" : "false");
         if(localStorage.getItem("dark-theme") === "false" ? true : false) document.documentElement.setAttribute("data-theme", "light")

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './countryRow.module.scss';
-import Link from 'next/Link';
+import NextLink from 'next/link';
 import Image from 'next/image';
 
 
@@ -9,7 +9,7 @@ const CountryRow = ({name, flag, area, gini, population, id}) => {
   const giniYear = gini ? Object.keys(gini) : 'No data';
 
   return (
-    <Link href={`/country/${id}`}>
+    <NextLink href={`/country/${id}`}>
       <a className={styles.link}>
         <div className={styles.row}>
           <div className={styles.column__left}>
@@ -44,7 +44,7 @@ const CountryRow = ({name, flag, area, gini, population, id}) => {
           </div>
         </div>
       </a>
-    </Link>
+    </NextLink>
     
   );
 };

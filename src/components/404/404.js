@@ -1,4 +1,4 @@
-import Link from 'next/Link';
+import NextLink from 'next/link';
 import styles from './404.module.scss';
 
 const ErrorLink = () => {
@@ -8,9 +8,9 @@ const ErrorLink = () => {
       <h2 className={styles.subtitle}>
         Looks like u entered the wrong URL /\(0_0)/\
       </h2>
-      <Link href="/">
+      <NextLink href="/">
         <a className={styles.link}>Back</a>
-      </Link>
+      </NextLink>
     </section>
   );
 };
